@@ -1,5 +1,7 @@
 <?php
 
+$oldtime = microtime(true);
+
 $endpoint = 'http://query.yahooapis.com/v1/public/yql?q=';
 
 $yql = 'select * from flickr.photos.search where has_geo="true" and text="beach"';
@@ -72,7 +74,8 @@ function get($url) {
         <?php echo$result; ?>  
 	</div>
 	</div>
-   <div id="ft" role="contentinfo"><p>written by Adrian Statescu | <a href="index.phps">source</a></p></div>
+   <div id="ft" role="contentinfo"><p>written by Adrian Statescu | <a href="2.phps">source</a> | <?php echo'Time spent: ';echo microtime(true) - $oldtime;echo' seconds';?></p></div>
 </div>
 </body>
 </html>
+

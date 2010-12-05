@@ -6,19 +6,13 @@ $endpoint = 'http://query.yahooapis.com/v1/public/yql?q=';
 
 $yql = 'select * from flickr.photos.search where has_geo="true" and text="beach"';
 
-$url = $endpoint . urlencode($yql). '&format=xml';
+$url = $endpoint . urlencode($yql). '&format=json';
 
 $output = get($url);
 
-$xml = simplexml_load_string($output);
+$json = json_decode($output);
 
-/*
-echo"<pre>";
-print_r($xml);
-echo"</pre>";
-*/
-
-$result = build_photos($xml->results->photo);
+$result = build_photos($json->query->results->photo);
 
 function build_photos($photos) {
 
@@ -28,7 +22,7 @@ function build_photos($photos) {
 
         foreach($photos as $photo) {
 
-                $output .="<li><a href='http://www.flickr.com/photos/{$photo['owner']}/{$photo['id']}' target='_blank'><img src='http://farm{$photo['farm']}.static.flickr.com/{$photo['server']}/{$photo['id']}_{$photo['secret']}.jpg' alt='{$photo['title']}' width='75' height='75'/></a></li>";
+                $output .="<li><a href='http://www.flickr.com/photos/{$photo->owner}/{$photo->id}' target='_blank'><img src='http://farm{$photo->farm}.static.flickr.com/{$photo->server}/{$photo->id}_{$photo->secret}.jpg' alt='{$photo->title}' width='75' height='75'/></a></li>";
         }
 
      } else {
@@ -80,7 +74,7 @@ function get($url) {
         <?php echo$result; ?>  
 	</div>
 	</div>
-   <div id="ft" role="contentinfo"><p>written by Adrian Statescu | <a href="1.phps">source</a> | <?php echo'Time spent: ';echo microtime(true) - $oldtime;echo' seconds';?></p></div>
+   <div id="ft" role="contentinfo"><p>written by Adrian Statescu | <a href="2.phps">source</a> | <?php echo'Time spent: ';echo microtime(true) - $oldtime;echo' seconds';?></p></div>
 </div>
 </body>
 </html>
